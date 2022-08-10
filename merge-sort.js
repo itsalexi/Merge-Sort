@@ -1,35 +1,32 @@
-// Sort the left half
-// Sort the right half
-// Merge the left and right half
-
-// Merge Sort
-
-// Base case - If the array is <= 1 then no need to slice the array in half
-// Otherwise
-// Get the middle index by getting the length of the array and divide it by two
-// Using the middle index, slice the array in to two parts
-
-// Now we sort the left and right half by calling another function that accepts the left and right half
-// array
-
-// We create a new array to store the sorted halves
-
-// While the left and right half still contain elements, compare the first elements of the left
-// and right array and push whichever one is lesser than the other one, instead of appending
-// left[0] and right[0], we can use the .shift() function to remove the first element of the
-// given half so when we loop back later we can just compare the first elements again.
-// Then we return the array and we add the left and right half with it as well.
-
 function mergeSort(array) {
+    // When theres only one element in the array then there is no need to halve anymore.
     if (array.length <= 1) {
         return array;
     }
 
     let middle = Math.floor(array.length / 2);
-    let left = array.slice(0, middle);
-    let right = array.slice(middle, array.length);
 
-    console.log(left, right);
+    // Separates the two sides of the array into two variables.
+    let left = array.splice(0, middle);
+    let right = array;
+
+    // Call the merge function, while recursively calling mergeSort
+    return merge(mergeSort(left), mergeSort(right));
 }
 
-mergeSort([1, 2, 3, 5]);
+function merge(left, right) {
+    let sorted = [];
+    // While there still is elements inside the left and right array, continue to compare them
+    while (left.length && right.length) {
+        if (left[0] < right[0]) {
+            sorted.push(left.shift());
+        } else {
+            sorted.push(right.shift());
+        }
+    }
+
+    // Once both arrays are sorted, we return the sorted array.
+    return [...sorted, ...left, ...right];
+}
+
+console.log(mergeSort([61, 5, 3]));
